@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-  res.send('this is another change');
+  res.send('this is another change asd');
 });
 
 
