@@ -1,15 +1,15 @@
 {
-  "name": "nodejs_cicd_with_nginx",
+  "name": "nodejs_cicd",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "dep": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
-  },
-  "description": ""
+  }
 }
