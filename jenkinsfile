@@ -1,0 +1,40 @@
+pipeline {
+    environment {
+    registry = "yashapatel274/node-app"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+    }
+
+    agent any
+    stages {
+            stage('Cloning our Git') {
+                steps {
+                git 'git@github.com:naistangz/Docker_Jenkins_Pipeline.git'
+                }
+            }
+
+            stage('Building Docker Image') {
+                steps {
+                    script {
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    }
+                }
+            }
+
+            stage('Deploying Docker Image to Dockerhub') {
+                steps {
+                    script {
+                        docker.withRegistry('httpd://registry.docker.com', 'bf9c57df-8f9f-4aae-a4ba-dbb397b675a9') {
+                        dockerImage.push()
+                        }
+                    }
+                }
+            }
+
+            stage('Cleaning Up') {
+                steps{
+                  sh "docker rmi --force $registry:$BUILD_NUMBER"
+                }
+            }
+        }
+    }
