@@ -9,7 +9,7 @@ pipeline {
     stages {
             stage('Cloning our Git') {
                 steps {
-                git 'git@github.com:naistangz/Docker_Jenkins_Pipeline.git'
+                    git 'git@github.com:YASH-PATEL1221/Node_CICD.git'
                 }
             }
 
@@ -24,7 +24,7 @@ pipeline {
             stage('Deploying Docker Image to Dockerhub') {
                 steps {
                     script {
-                        docker.withRegistry('httpd://registry.docker.com', 'bf9c57df-8f9f-4aae-a4ba-dbb397b675a9') {
+                        docker.withRegistry('https://registry.docker.com', 'bf9c57df-8f9f-4aae-a4ba-dbb397b675a9') {
                         dockerImage.push()
                         }
                     }
