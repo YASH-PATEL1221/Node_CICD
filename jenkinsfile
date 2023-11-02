@@ -24,7 +24,7 @@ pipeline {
             stage('Deploying Docker Image to Dockerhub') {
                 steps {
                     script {
-                        docker.withRegistry('https://registry.docker.com', 'bf9c57df-8f9f-4aae-a4ba-dbb397b675a9') {
+                        docker.withRegistry('https://registry.docker.com', 'f1e84b94-b141-468b-9abc-15f34d9fd0c9') {
                         dockerImage.push()
                         }
                     }
