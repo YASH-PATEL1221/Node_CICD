@@ -1,8 +1,8 @@
 pipeline {
     environment {
-    registry = "yashapatel274/node-app"
-    registryCredential = 'dockerhub'
-    dockerImage = ''
+        registry = "yashapatel274/node-app"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
     }
 
     agent any
@@ -24,8 +24,8 @@ pipeline {
             stage('Deploying Docker Image to Dockerhub') {
                 steps {
                     script {
-                        docker.withRegistry('https://registry.docker.com', 'f1e84b94-b141-468b-9abc-15f34d9fd0c9') {
-                        dockerImage.push()
+                            docker.withRegistry('https://registry.docker.com/', 'f1e84b94-b141-468b-9abc-15f34d9fd0c9') {
+                            dockerImage.push()
                         }
                     }
                 }
