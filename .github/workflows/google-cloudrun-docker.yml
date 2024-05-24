@@ -84,7 +84,7 @@ jobs:
 
       # BEGIN - Docker auth and build (NOTE: If you already have a container image, these Docker steps can be omitted)
 
-      # Authenticate Docker to Google Cloud Artifact Registry 
+      # Authenticate Docker to Google Cloud Artifact Registry  
       - name: Docker Auth
         run: |-
           gcloud auth configure-docker "${{ env.GAR_LOCATION }}-docker.pkg.dev"
