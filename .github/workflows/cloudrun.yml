@@ -1,0 +1,57 @@
+name: Build and Deploy to Google Cloud
+
+on:
+  push:
+    branches: [ "master" ]
+
+
+# SERVICE ACCOUNT : cloud-run-and-deploy@semiotic-karma-397201.iam.gserviceaccount.com
+env:
+  PROJECT_ID: cloud-sql-423523
+  REGION: us-central1
+  APP_NAME: node-app
+  REGISTRY_NAME: cloud-run-source-deploy
+  SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+
+jobs:
+  build-and-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Authenticate with Google Cloud
+      - id: "auth"
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      # Setup gcloud CLI/SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker $REGION-docker.pkg.dev
+
+      - name: Build and tag the docker image
+        run: |-
+          docker build --build-arg NODE_ENV=dev . --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REGISTRY_NAME/$APP_NAME:$GITHUB_SHA
+
+      - name: Push the image to the Google Artifact Registry (GAR)
+        run: |-
+          docker push $REGION-docker.pkg.dev/$PROJECT_ID/$REGISTRY_NAME/$APP_NAME:$GITHUB_SHA
+
+      # - name: Build and push the Docker image
+      #   run: |-
+      #     gcloud builds submit . --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REGISTRY_NAME/$APP_NAME:$GITHUB_SHA
+
+      - name: Deploy
+        run: |-
+          gcloud run deploy $APP_NAME \
+          --region $REGION \
+          --image $REGION-docker.pkg.dev/$PROJECT_ID/$REGISTRY_NAME/$APP_NAME:$GITHUB_SHA \
+          --platform "managed" \
+          --service-account $SERVICE_ACCOUNT_EMAIL \
+          --port 80 \
+          --quiet
