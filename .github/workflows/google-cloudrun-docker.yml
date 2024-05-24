@@ -108,7 +108,7 @@ jobs:
       - name: Allow access to project
         run: |
           gcloud projects add-iam-policy-binding ${{ env.PROJECT_ID }} \
-            --member="serviceAccount:'${{ secrets.SERVICE_ACCOUNT_EMAIL }}'" \
+            --member="serviceAccount:'${{ env.SERVICE_ACCOUNT_EMAIL }}'" \
             --role="roles/run.admin"
 
 
