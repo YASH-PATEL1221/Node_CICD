@@ -118,6 +118,15 @@ jobs:
           SERVICE: ${{ env.SERVICE }}
           REGION: ${{ env.REGION }}
 
+      - name: Make the service public
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE }} --platform managed --region ${{ env.REGION }} --format 'value(status.url)')
+          gcloud run services add-iam-policy-binding ${{ env.SERVICE }} \
+            --member="allUsers" \
+            --role="roles/run.invoker" \
+            --platform managed \
+            --region ${{ env.REGION }}
+
       # If required, use the Cloud Run url output in later steps
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
