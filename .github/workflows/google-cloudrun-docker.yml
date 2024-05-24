@@ -21,7 +21,7 @@
 #
 #    Cloud Run
 #      roles/run.admin
-#      roles/iam.serviceAccountUser     (to act as the Cloud Run runtime service account)
+#      roles/iam.serviceAccountUser     (to act as the Cloud Run runtime service account)   
 #
 #    Artifact Registry
 #      roles/artifactregistry.admin     (project or repository level)  
