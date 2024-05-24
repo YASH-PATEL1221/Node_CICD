@@ -53,6 +53,7 @@ env:
   GAR_LOCATION: us-east1 # TODO: update Artifact Registry location
   SERVICE:  node-container # TODO: update Cloud Run service name 
   REGION: us-east1 # TODO: update Cloud Run service region
+  SERVICE_ACCOUNT_EMAIL: 913448250525-compute@developer.gserviceaccount.com
 
 jobs:
   deploy:
@@ -103,6 +104,13 @@ jobs:
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here  
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/nodecicd:${{ github.sha }}
+
+      - name: Allow access to project
+        run: |
+          gcloud projects add-iam-policy-binding ${{ env.PROJECT_ID }} \
+            --member="serviceAccount:'${{ secrets.SERVICE_ACCOUNT_EMAIL }}'" \
+            --role="roles/run.admin"
+
 
       - name: Allow unauthenticated access
         run: |
