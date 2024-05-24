@@ -82,13 +82,6 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-      - name: Grant Artifact Registry access
-        run: |
-          PROJECT_NUMBER=$(gcloud projects describe ${{ env.GCP_PROJECT_ID }} --format="value(projectNumber)")
-          gcloud projects add-iam-policy-binding ${{ env.GCP_PROJECT_ID }} \
-            --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
-            --role="roles/artifactregistry.reader"
-
       # BEGIN - Docker auth and build (NOTE: If you already have a container image, these Docker steps can be omitted)
 
       # Authenticate Docker to Google Cloud Artifact Registry 
