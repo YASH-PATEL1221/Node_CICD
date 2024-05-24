@@ -24,7 +24,7 @@
 #      roles/iam.serviceAccountUser     (to act as the Cloud Run runtime service account)
 #
 #    Artifact Registry
-#      roles/artifactregistry.admin     (project or repository level)
+#      roles/artifactregistry.admin     (project or repository level)  
 #
 #    NOTE: You should always follow the principle of least privilege when assigning IAM roles
 # 
